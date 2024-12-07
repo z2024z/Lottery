@@ -8,6 +8,8 @@ console.log("Lottery Ticket 2024.");
 store_data();
 function store_data() {
   const dbo = require("./function_js/db_operate");
-  dbo.db_init();
+  const db = dbo.db_init();
+//   dbo.db_union_lotto_create_table(db);
+  dbo.db_close(db);
 }
 //[2] analyze data [sqlite3 -> json]
