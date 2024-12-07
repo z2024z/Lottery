@@ -43,3 +43,27 @@ exports.db_union_lotto_create_table = function (db) {
     }
   });
 };
+
+exports.db_union_lotto_insert = function (db, data) {
+  const sql = `INSERT INTO union_lotto (happen_time, red_ball_1, red_ball_2, red_ball_3, red_ball_4, red_ball_5, red_ball_6, blue_ball) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+  db.run(
+    sql,
+    [
+      data.happen_time,
+      data.red_ball_1,
+      data.red_ball_2,
+      data.red_ball_3,
+      data.red_ball_4,
+      data.red_ball_5,
+      data.red_ball_6,
+      data.blue_ball,
+    ],
+    (err) => {
+      if (err) {
+        console.error(err.message);
+      } else {
+        console.log("Insert data to union_lotto.");
+      }
+    }
+  );
+};
