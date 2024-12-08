@@ -60,10 +60,55 @@ exports.db_union_lotto_insert = function (db, data) {
     ],
     (err) => {
       if (err) {
-        console.error(err.message);
+        // console.error(err.message);
       } else {
         console.log("Insert data to union_lotto.");
       }
     }
   );
+};
+
+exports.update_data_db_union_lotto = function (db) {
+  const file_system = require("fs");
+  //[1] get json from json file.
+  //[2] build one json object .
+  //[3] write into db , and analysis data
+  for (let i = 1; i <= 60; i++) {
+    let union_lotto_json_file_path =
+      "./data_original/union_lotto_json/ul_" + i + ".json";
+    file_system.readFile(union_lotto_json_file_path, "utf-8", (err, data) => {
+      if (err) {
+        console.error(err.message);
+        return;
+      }
+      try {
+        const obj = JSON.parse(data);
+        for (let i2 = 0; i2 < obj.pageSize; i2++) {
+          const new_json = {
+            happen_time: obj.result[i2].date.slice(0, 10),
+            red_ball_1: obj.result[i2].red.split(",")[0],
+            red_ball_2: obj.result[i2].red.split(",")[1],
+            red_ball_3: obj.result[i2].red.split(",")[2],
+            red_ball_4: obj.result[i2].red.split(",")[3],
+            red_ball_5: obj.result[i2].red.split(",")[4],
+            red_ball_6: obj.result[i2].red.split(",")[5],
+            blue_ball: obj.result[i2].blue,
+          };
+
+          this.db_union_lotto_insert(db, new_json);
+        }
+      } catch (err) {
+        // console.error(err.message);
+      }
+    });
+  }
+};
+
+exports.db_append_constraint = function (db) {
+  const sql = `ALTER TABLE union_lotto ADD unique unique_happen_time UNIQUE (happen_time);`;
+  db.run(sql, (err) => {
+    if (err) {
+      console.error(err.message);
+    }
+  });
 };

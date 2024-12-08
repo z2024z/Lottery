@@ -9,7 +9,9 @@ store_data();
 function store_data() {
   const dbo = require("./function_js/db_operate");
   const db = dbo.db_init();
-//   dbo.db_union_lotto_create_table(db);
-  dbo.db_close(db);
+  // dbo.db_append_constraint(db);
+  // dbo.update_data_db_union_lotto(db);
+  //   dbo.db_union_lotto_create_table(db);
+  // dbo.db_close(db);
 }
 //[2] analyze data [sqlite3 -> json]
